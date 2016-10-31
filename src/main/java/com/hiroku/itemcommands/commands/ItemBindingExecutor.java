@@ -37,9 +37,10 @@ public class ItemBindingExecutor extends CommandBase
 		aliases.add("itemBinding");
 		aliases.add("ItemBinding");
 		aliases.add("Itembinding");
+		aliases.add("itembindings");
 		aliases.add("Itembindings");
-		aliases.add("Itembindings");
-		aliases.add("Itembindings");
+		aliases.add("itemBindings");
+		aliases.add("ItemBindings");
 		return aliases;
 	}
 	
@@ -200,7 +201,7 @@ public class ItemBindingExecutor extends CommandBase
 						case "reload":
 						{
 							BindingRegistry.load();
-							sendMessage(sender, "&2Successfully reloaded the bindings from itemcommands.conf");
+							sendMessage(sender, "&2Successfully reloaded the bindings from&r config/itemcommands.conf");
 							break;
 						}
 					}
