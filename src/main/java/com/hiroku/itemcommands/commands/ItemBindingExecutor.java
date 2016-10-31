@@ -42,7 +42,7 @@ public class ItemBindingExecutor extends CommandBase
 	@Override
 	public String getCommandUsage(ICommandSender sender)
 	{
-		return "/itembinding <get | add <command> | remove>";
+		return "&c/itembinding <get | add <command> | remove>";
 	}
 
 	/**
@@ -152,12 +152,13 @@ public class ItemBindingExecutor extends CommandBase
 						case "get": 
 						{
 							ArrayList<String> commands = BindingRegistry.getCommands(item);
-							sendMessage(sender, "&eCommands for: " + item);
+							sendMessage(sender, "&eCommands for:&r " + item);
 							if (commands.size() == 0)
 								sendMessage(sender, "&eNone.");
 							else
 								for (String command : commands)
-									sendMessage(sender, "&e" + command);
+									sendMessage(sender, "&e/" + command);
+							break;
 						}
 						case "add":
 						{
@@ -176,19 +177,21 @@ public class ItemBindingExecutor extends CommandBase
 								sendMessage(sender, "&2Successfully registered command binding.");
 								execute(server, sender, new String[]{"get"});
 							}
+							break;
 						}
 						case "remove": 
 						{
 							ArrayList<String> commands = BindingRegistry.getCommands(item);
 							int amount = commands.size();
 							if (amount == 0)
-								sendMessage(sender, "&cNo bindings exist for " + item);
+								sendMessage(sender, "&cNo bindings exist for&r " + item);
 							else
 							{
 								BindingRegistry.clearBindings(item);
 								BindingRegistry.save();
-								sendMessage(sender, "&2Successfully cleared all " + amount + " binding/s from " + item);
+								sendMessage(sender, "&2Successfully cleared all " + amount + " binding/s from&r " + item);
 							}
+							break;
 						}
 					}
 				}
