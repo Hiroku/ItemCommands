@@ -47,7 +47,7 @@ public class ItemBindingExecutor extends CommandBase
 	@Override
 	public String getCommandUsage(ICommandSender sender)
 	{
-		return "&c/itembinding <get | add <command> | remove>";
+		return "&c/itembinding <get | add <command> | remove | reload>";
 	}
 
 	/**
