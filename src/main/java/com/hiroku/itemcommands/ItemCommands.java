@@ -1,5 +1,8 @@
 package com.hiroku.itemcommands;
 
+import com.hiroku.itemcommands.commands.ItemBindingExecutor;
+import com.hiroku.itemcommands.data.BindingRegistry;
+
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -15,12 +18,12 @@ public class ItemCommands
 	@EventHandler
 	public void onPreInit(FMLPreInitializationEvent event)
 	{
-		
+		BindingRegistry.load();
 	}
 	
 	@EventHandler
 	public void onServerStart(FMLServerStartingEvent event)
 	{
-		
+		event.registerServerCommand(new ItemBindingExecutor());
 	}
 }
