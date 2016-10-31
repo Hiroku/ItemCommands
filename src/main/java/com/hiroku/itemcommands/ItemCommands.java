@@ -1,5 +1,7 @@
 package com.hiroku.itemcommands;
 
+import java.util.Timer;
+
 import com.hiroku.itemcommands.commands.ItemBindingExecutor;
 import com.hiroku.itemcommands.data.BindingRegistry;
 import com.hiroku.itemcommands.listeners.InteractListener;
@@ -16,6 +18,8 @@ public class ItemCommands
 	public static final String MODID = "itemcommands";
 	public static final String NAME = "Item Commands";
 	public static final String VERSION = "1.0.0";
+	
+	public static final Timer timer = new Timer();
 	
 	@EventHandler
 	public void onPreInit(FMLPreInitializationEvent event)
