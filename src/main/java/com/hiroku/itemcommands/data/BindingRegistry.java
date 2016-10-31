@@ -99,4 +99,11 @@ public class BindingRegistry
 	{
 		return binding.remove(item) != null;
 	}
+	
+	public static void addBinding(String item, String command)
+	{
+		ArrayList<String> commands = getCommands(item);
+		commands.add(command);
+		binding.put(item, commands);
+	}
 }
