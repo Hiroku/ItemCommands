@@ -27,6 +27,7 @@ public class ItemBindingExecutor extends CommandBase
 		options.add("get");
 		options.add("add");
 		options.add("remove");
+		options.add("reload");
 	}
 
 	@Override
@@ -36,6 +37,9 @@ public class ItemBindingExecutor extends CommandBase
 		aliases.add("itemBinding");
 		aliases.add("ItemBinding");
 		aliases.add("Itembinding");
+		aliases.add("Itembindings");
+		aliases.add("Itembindings");
+		aliases.add("Itembindings");
 		return aliases;
 	}
 	
@@ -191,6 +195,12 @@ public class ItemBindingExecutor extends CommandBase
 								BindingRegistry.save();
 								sendMessage(sender, "&2Successfully cleared all " + amount + " binding/s from&r " + item);
 							}
+							break;
+						}
+						case "reload":
+						{
+							BindingRegistry.load();
+							sendMessage(sender, "&2Successfully reloaded the bindings from itemcommands.conf");
 							break;
 						}
 					}
