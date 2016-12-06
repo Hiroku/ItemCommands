@@ -2,15 +2,13 @@ package com.hiroku.itemcommands.timertasks;
 
 import java.util.TimerTask;
 
-import com.hiroku.itemcommands.data.BoundCommand;
-
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class DelayedExecuteTask extends TimerTask
 {
-	private final BoundCommand command;
+	private final String command;
 	
-	public DelayedExecuteTask(BoundCommand command)
+	public DelayedExecuteTask(String command)
 	{
 		this.command = command;
 	}
@@ -18,7 +16,7 @@ public class DelayedExecuteTask extends TimerTask
 	public void run()
 	{
 		FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(
-				FMLCommonHandler.instance().getMinecraftServerInstance(), command.command);
+				FMLCommonHandler.instance().getMinecraftServerInstance(), command);
 	}
 
 }
