@@ -26,6 +26,6 @@ public class CommandTask extends TimerTask
 		ArrayList<BoundCommand> commands = BindingRegistry.getCommands(item.getUnlocalizedName());
 		if (!commands.isEmpty())
 			for (BoundCommand command : commands)
-				new Timer().schedule(new DelayedExecuteTask(command.command.replaceAll("PLAYER", playerName)), command.delaySeconds);
+				new Timer().schedule(new DelayedExecuteTask(command.command.replaceAll("PLAYER", playerName)), command.delaySeconds * 1000);
 	}
 }
