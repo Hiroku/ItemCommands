@@ -3,6 +3,7 @@ package com.hiroku.itemcommands.commands;
 import java.util.ArrayList;
 
 import com.hiroku.itemcommands.data.BindingRegistry;
+import com.hiroku.itemcommands.data.BoundCommand;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -156,13 +157,13 @@ public class ItemBindingExecutor extends CommandBase
 					{
 						case "get": 
 						{
-							ArrayList<String> commands = BindingRegistry.getCommands(item);
+							ArrayList<BoundCommand> commands = BindingRegistry.getCommands(item);
 							sendMessage(sender, "&eCommands for:&r " + item);
 							if (commands.size() == 0)
 								sendMessage(sender, "&eNone.");
 							else
-								for (String command : commands)
-									sendMessage(sender, "&e/" + command);
+								for (BoundCommand command : commands)
+									sendMessage(sender, "&e/" + command.command + "&6. Delay: " + command.delaySeconds);
 							break;
 						}
 						case "add":
@@ -174,10 +175,19 @@ public class ItemBindingExecutor extends CommandBase
 							}
 							else
 							{
-								String command = args[1].replace("/", "");
-								for (int i = 2 ; i < args.length ; i++)
+								int startingIndex = 1;
+								int delaySeconds = 0;
+								try
+								{
+									delaySeconds = Integer.parseInt(args[1]);
+									startingIndex = 2;
+								}
+								catch(NumberFormatException nfe) { ; }
+								
+								String command = args[startingIndex].replace("/", "");
+								for (int i = startingIndex + 1 ; i < args.length ; i++)
 									command += " " + args[i];
-								BindingRegistry.addBinding(item, command);
+								BindingRegistry.addBinding(item, command, delaySeconds);
 								BindingRegistry.save();
 								sendMessage(sender, "&2Successfully registered command binding.");
 								execute(server, sender, new String[]{"get"});
@@ -186,7 +196,7 @@ public class ItemBindingExecutor extends CommandBase
 						}
 						case "remove": 
 						{
-							ArrayList<String> commands = BindingRegistry.getCommands(item);
+							ArrayList<BoundCommand> commands = BindingRegistry.getCommands(item);
 							int amount = commands.size();
 							if (amount == 0)
 								sendMessage(sender, "&cNo bindings exist for&r " + item);

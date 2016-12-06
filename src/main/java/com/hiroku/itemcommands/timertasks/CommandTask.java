@@ -1,12 +1,13 @@
 package com.hiroku.itemcommands.timertasks;
 
 import java.util.ArrayList;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import com.hiroku.itemcommands.data.BindingRegistry;
+import com.hiroku.itemcommands.data.BoundCommand;
 
 import net.minecraft.item.Item;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class CommandTask extends TimerTask
 {
@@ -22,11 +23,9 @@ public class CommandTask extends TimerTask
 	@Override
 	public void run()
 	{
-		ArrayList<String> commands = BindingRegistry.getCommands(item.getUnlocalizedName());
+		ArrayList<BoundCommand> commands = BindingRegistry.getCommands(item.getUnlocalizedName());
 		if (!commands.isEmpty())
-			for (String command : commands)
-				FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager().executeCommand(
-						FMLCommonHandler.instance().getMinecraftServerInstance(), command.replaceAll("PLAYER", playerName));
+			for (BoundCommand command : commands)
+				new Timer().schedule(new DelayedExecuteTask(command), command.delaySeconds);
 	}
-
 }

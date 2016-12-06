@@ -14,6 +14,7 @@ public class InteractListener
 	{
 		if (event.getWorld().isRemote || event.getHand() == EnumHand.OFF_HAND)
 			return;
+		
 		ItemCommands.timer.schedule(new CommandTask(event.getItemStack().getItem(), event.getEntityPlayer().getName()), 0);
 	}
 	

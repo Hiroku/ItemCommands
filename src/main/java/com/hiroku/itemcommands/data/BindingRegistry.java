@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class BindingRegistry
 {
 	/** Maps Item id to a list of commands binded */
-	private static HashMap<String, ArrayList<String>> binding = new HashMap<String, ArrayList<String>>(); 
+	private static HashMap<String, ArrayList<BoundCommand>> binding = new HashMap<String, ArrayList<BoundCommand>>(); 
 	
 	private static final String PATH = "config/itemcommands.conf";
 	
@@ -42,9 +42,26 @@ public class BindingRegistry
 				
 				String[] splits = line.split(",");
 				
-				ArrayList<String> commands = new ArrayList<String>();
+				ArrayList<BoundCommand> commands = new ArrayList<BoundCommand>();
 				for (int i = 1; i < splits.length; i++)
-					commands.add(splits[i]);
+				{
+					String split = splits[i];
+					int delaySeconds = 0;
+					String command = "";
+					if (split.contains(":"))
+					{
+						try
+						{
+							command = split.split(":")[0];
+							delaySeconds = Integer.parseInt(split.split(":")[1]);
+						}
+						catch(NumberFormatException nfe) { nfe.printStackTrace(); }
+					}
+					else
+						command = split;
+					commands.add(new BoundCommand(command, delaySeconds));
+				}
+					
 				
 				binding.put(splits[0], commands);
 			}
@@ -71,10 +88,13 @@ public class BindingRegistry
 			
 			for (String item : keys)
 			{
-				ArrayList<String> commands = binding.get(item);
+				ArrayList<BoundCommand> commands = binding.get(item);
 				String commandList = "";
-				for (String command : commands)
-					commandList += command + ",";
+				for (BoundCommand command : commands)
+					if (command.delaySeconds != 0)
+						commandList += command.command + ":" + command.delaySeconds + ",";
+					else
+						commandList += command.command + ",";
 				if (commandList.endsWith(","))
 					commandList = commandList.substring(0, commandList.length() - 1);
 				
@@ -88,11 +108,11 @@ public class BindingRegistry
 		}
 	}
 	
-	public static ArrayList<String> getCommands(String item)
+	public static ArrayList<BoundCommand> getCommands(String item)
 	{
 		if (binding.containsKey(item))
 			return binding.get(item);
-		return new ArrayList<String>();
+		return new ArrayList<BoundCommand>();
 	}
 	
 	public static boolean clearBindings(String item)
@@ -100,10 +120,10 @@ public class BindingRegistry
 		return binding.remove(item) != null;
 	}
 	
-	public static void addBinding(String item, String command)
+	public static void addBinding(String item, String command, int delaySeconds)
 	{
-		ArrayList<String> commands = getCommands(item);
-		commands.add(command);
+		ArrayList<BoundCommand> commands = getCommands(item);
+		commands.add(new BoundCommand(command, delaySeconds));
 		binding.put(item, commands);
 	}
 }
