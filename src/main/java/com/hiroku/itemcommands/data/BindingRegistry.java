@@ -48,12 +48,12 @@ public class BindingRegistry
 					String split = splits[i];
 					int delaySeconds = 0;
 					String command = "";
-					if (split.contains(":"))
+					if (split.contains("::"))
 					{
 						try
 						{
-							command = split.split(":")[0];
-							delaySeconds = Integer.parseInt(split.split(":")[1]);
+							command = split.split("::")[0];
+							delaySeconds = Integer.parseInt(split.split("::")[1]);
 						}
 						catch(NumberFormatException nfe) { nfe.printStackTrace(); }
 					}
@@ -92,7 +92,7 @@ public class BindingRegistry
 				String commandList = "";
 				for (BoundCommand command : commands)
 					if (command.delaySeconds != 0)
-						commandList += command.command + ":" + command.delaySeconds + ",";
+						commandList += command.command + "::" + command.delaySeconds + ",";
 					else
 						commandList += command.command + ",";
 				if (commandList.endsWith(","))
