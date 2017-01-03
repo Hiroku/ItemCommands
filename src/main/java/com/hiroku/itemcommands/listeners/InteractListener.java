@@ -1,29 +1,18 @@
 package com.hiroku.itemcommands.listeners;
 
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.item.inventory.InteractItemEvent;
+
 import com.hiroku.itemcommands.ItemCommands;
 import com.hiroku.itemcommands.timertasks.CommandTask;
 
-import net.minecraft.util.EnumHand;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
 public class InteractListener
 {
-	@SubscribeEvent
-	public void onItemRightClick(PlayerInteractEvent.RightClickItem event)
+	@Listener
+	public void onItemRightClick(InteractItemEvent event )
 	{
-		if (event.getWorld().isRemote || event.getHand() == EnumHand.OFF_HAND)
-			return;
-		
-		ItemCommands.timer.schedule(new CommandTask(event.getItemStack().getItem(), event.getEntityPlayer().getName()), 0);
-	}
-	
-	@SubscribeEvent
-	public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
-	{
-		if (event.getWorld().isRemote || event.getHand() == EnumHand.OFF_HAND)
-			return;
-		if (event.getItemStack() != null)
-			ItemCommands.timer.schedule(new CommandTask(event.getItemStack().getItem(), event.getEntityPlayer().getName()), 0);
+		if (event.getCause().root() instanceof Player)
+			ItemCommands.timer.schedule(new CommandTask(event.getItemStack().getType().getName(), ((Player)event.getCause().root()).getName()), 0);
 	}
 }

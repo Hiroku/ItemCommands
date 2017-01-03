@@ -1,72 +1,32 @@
 package com.hiroku.itemcommands.commands;
 
-import java.util.ArrayList;
+import org.spongepowered.api.command.CommandException;
+import org.spongepowered.api.command.CommandResult;
+import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandExecutor;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.text.format.TextStyles;
 
-import com.hiroku.itemcommands.data.BindingRegistry;
-import com.hiroku.itemcommands.data.BoundCommand;
-
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.common.ForgeHooks;
-
-public class ItemBindingExecutor extends CommandBase
+public class ItemBindingExecutor implements CommandExecutor
 {
-	@Override
-	public String getCommandName()
-	{
-		return "itembinding";
-	}
-	
-	private static ArrayList<String> options = new ArrayList<String>();
-	
-	static
-	{
-		options.add("get");
-		options.add("add");
-		options.add("remove");
-		options.add("reload");
-	}
-
-	@Override
-	public ArrayList<String> getCommandAliases()
-	{
-		ArrayList<String> aliases = new ArrayList<String>();
-		aliases.add("itemBinding");
-		aliases.add("ItemBinding");
-		aliases.add("Itembinding");
-		aliases.add("itembindings");
-		aliases.add("Itembindings");
-		aliases.add("itemBindings");
-		aliases.add("ItemBindings");
-		return aliases;
-	}
-	
-	@Override
-	public String getCommandUsage(ICommandSender sender)
-	{
-		return "&c/itembinding <get | add [delaySeconds] <command> | remove | reload>";
-	}
-
 	/**
 	 * Sends a message to a CommandSender if the parameter is not a blank String. Copied from ObliqueCore
 	 * @param sender The console or the EntityPlayerMP instance representing the player the message should be delivered to
 	 * @param message The message itself or blank if no message should be delivered
 	 */
-	private void sendMessage(ICommandSender sender, String message) 
+	public static void sendMessage(CommandSource sender, String message) 
 	{
 		if (message != null && !message.equals(""))
-			sender.addChatMessage(ForgeHooks.newChatWithLinks(embedColours(message)));
+			sender.sendMessage(Text.of(embedColours(message)));
 	}
 	/**
 	 * Conversion method to replace the ampersand colours with the EnumTextFormatting format. Copied from ObliqueCore
 	 * @param str The String that needs to be operated on
 	 * @return the modified String
 	 */
-	private String embedColours(String str)
+	private static String embedColours(String str)
 	{
 		char curColour = '-';
 		char curFormat = '-';
@@ -105,124 +65,38 @@ public class ItemBindingExecutor extends CommandBase
 				i += charsToAdd.length();
 			}
 		}
-		str = str.replaceAll("&0", TextFormatting.BLACK + "");
-		str = str.replaceAll("&1", TextFormatting.DARK_BLUE + "");
-		str = str.replaceAll("&2", TextFormatting.DARK_GREEN + "");
-		str = str.replaceAll("&3", TextFormatting.DARK_AQUA + "");
-		str = str.replaceAll("&4", TextFormatting.DARK_RED + "");
-		str = str.replaceAll("&5", TextFormatting.DARK_PURPLE + "");
-		str = str.replaceAll("&6", TextFormatting.GOLD + "");
-		str = str.replaceAll("&7", TextFormatting.GRAY + "");
-		str = str.replaceAll("&8", TextFormatting.DARK_GRAY + "");
-		str = str.replaceAll("&9", TextFormatting.BLUE + "");
-		str = str.replaceAll("&a", TextFormatting.GREEN + "");
-		str = str.replaceAll("&b", TextFormatting.AQUA + "");
-		str = str.replaceAll("&c", TextFormatting.RED + "");
-		str = str.replaceAll("&d", TextFormatting.LIGHT_PURPLE + "");
-		str = str.replaceAll("&e", TextFormatting.YELLOW + "");
-		str = str.replaceAll("&f", TextFormatting.WHITE + "");
+		str = str.replaceAll("&0", TextColors.BLACK + "");
+		str = str.replaceAll("&1", TextColors.DARK_BLUE + "");
+		str = str.replaceAll("&2", TextColors.DARK_GREEN + "");
+		str = str.replaceAll("&3", TextColors.DARK_AQUA + "");
+		str = str.replaceAll("&4", TextColors.DARK_RED + "");
+		str = str.replaceAll("&5", TextColors.DARK_PURPLE + "");
+		str = str.replaceAll("&6", TextColors.GOLD + "");
+		str = str.replaceAll("&7", TextColors.GRAY + "");
+		str = str.replaceAll("&8", TextColors.DARK_GRAY + "");
+		str = str.replaceAll("&9", TextColors.BLUE + "");
+		str = str.replaceAll("&a", TextColors.GREEN + "");
+		str = str.replaceAll("&b", TextColors.AQUA + "");
+		str = str.replaceAll("&c", TextColors.RED + "");
+		str = str.replaceAll("&d", TextColors.LIGHT_PURPLE + "");
+		str = str.replaceAll("&e", TextColors.YELLOW + "");
+		str = str.replaceAll("&f", TextColors.WHITE + "");
 		
-		str = str.replaceAll("&k", TextFormatting.OBFUSCATED + "");
-		str = str.replaceAll("&l", TextFormatting.BOLD + "");
-		str = str.replaceAll("&m", TextFormatting.STRIKETHROUGH + "");
-		str = str.replaceAll("&n", TextFormatting.UNDERLINE + "");
-		str = str.replaceAll("&o", TextFormatting.ITALIC + "");
+		str = str.replaceAll("&k", TextStyles.OBFUSCATED + "");
+		str = str.replaceAll("&l", TextStyles.BOLD + "");
+		str = str.replaceAll("&m", TextStyles.STRIKETHROUGH + "");
+		str = str.replaceAll("&n", TextStyles.UNDERLINE + "");
+		str = str.replaceAll("&o", TextStyles.ITALIC + "");
 		
-		str = str.replaceAll("&r", TextFormatting.RESET + "");
+		str = str.replaceAll("&r", TextColors.RESET + "");
 		
 		return str;
 	}
 	
 	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
+	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException
 	{
-		if (sender instanceof MinecraftServer)
-			sendMessage(sender, "&cYou can't run this command from the console, dummy");
-		else if (args.length == 0)
-		{
-			sendMessage(sender, "&cNot enough parameters.");
-			sendMessage(sender, getCommandUsage(sender));
-		}
-		else
-		{
-			if (options.contains(args[0].toLowerCase()))
-			{
-				EntityPlayerMP player = (EntityPlayerMP)sender;
-				if (player.getHeldItemMainhand() == null)
-					sendMessage(sender, "&cYou aren't holding any item");
-				else
-				{
-					String item = player.getHeldItemMainhand().getItem().getUnlocalizedName();
-					switch(args[0].toLowerCase())
-					{
-						case "get": 
-						{
-							ArrayList<BoundCommand> commands = BindingRegistry.getCommands(item);
-							sendMessage(sender, "&eCommands for:&r " + item);
-							if (commands.size() == 0)
-								sendMessage(sender, "&eNone.");
-							else
-								for (BoundCommand command : commands)
-									sendMessage(sender, "&e/" + command.command + "&6. Delay: " + command.delaySeconds);
-							break;
-						}
-						case "add":
-						{
-							if (args.length < 2)
-							{
-								sendMessage(sender, "&cNot enough arguments");
-								sendMessage(sender, getCommandUsage(sender));
-							}
-							else
-							{
-								int startingIndex = 1;
-								int delaySeconds = 0;
-								try
-								{
-									delaySeconds = Integer.parseInt(args[1]);
-									startingIndex = 2;
-								}
-								catch(NumberFormatException nfe) { ; }
-								
-								String command = args[startingIndex].replace("/", "");
-								for (int i = startingIndex + 1 ; i < args.length ; i++)
-									command += " " + args[i];
-								BindingRegistry.addBinding(item, command, delaySeconds);
-								BindingRegistry.save();
-								sendMessage(sender, "&2Successfully registered command binding.");
-								execute(server, sender, new String[]{"get"});
-							}
-							break;
-						}
-						case "remove": 
-						{
-							ArrayList<BoundCommand> commands = BindingRegistry.getCommands(item);
-							int amount = commands.size();
-							if (amount == 0)
-								sendMessage(sender, "&cNo bindings exist for&r " + item);
-							else
-							{
-								BindingRegistry.clearBindings(item);
-								BindingRegistry.save();
-								sendMessage(sender, "&2Successfully cleared all " + amount + " binding/s from&r " + item);
-							}
-							break;
-						}
-						case "reload":
-						{
-							BindingRegistry.load();
-							sendMessage(sender, "&2Successfully reloaded the bindings from&r config/itemcommands.conf");
-							break;
-						}
-					}
-				}
-			}
-			else
-			{
-				sendMessage(sender, "&cInvalid parameter/s");
-				sendMessage(sender, getCommandUsage(sender));
-			}
-		}
+		src.sendMessage(Text.of(TextColors.GRAY, "/itembinding <get | add [delaySeconds] <command> | remove | reload>"));
+		return CommandResult.success();
 	}
-
 }

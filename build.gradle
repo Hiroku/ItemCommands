@@ -1,17 +1,5 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-    }
-    dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
-    }
-}
-
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'java'
+apply plugin: 'eclipse'
 
 version = "1.10.2-1.1.1"
 group= "com.hiroku.itemcommands"
@@ -19,31 +7,18 @@ archivesBaseName = "ItemCommands"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
- 
-minecraft {
-	version = "1.10.2-12.18.2.2098"
-    runDir = "run"
-    mappings = "snapshot_20160704"
-    useDepAts = true
+
+repositories {
+    jcenter()
+    maven {
+        name 'Sponge maven repo'
+        url 'http://repo.spongepowered.org/maven'
+    }
+    maven {
+    	url 'https://jitpack.io'
+    }
 }
 
-configurations {
-    shade
-    compile.extendsFrom shade
-}
-
-processResources
-{
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-               
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-       
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+dependencies {
+    compile "org.spongepowered:spongeapi:5.1.0-SNAPSHOT"
 }

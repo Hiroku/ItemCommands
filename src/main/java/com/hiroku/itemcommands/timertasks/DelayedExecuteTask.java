@@ -2,7 +2,7 @@ package com.hiroku.itemcommands.timertasks;
 
 import java.util.TimerTask;
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import org.spongepowered.api.Sponge;
 
 public class DelayedExecuteTask extends TimerTask
 {
@@ -15,8 +15,6 @@ public class DelayedExecuteTask extends TimerTask
 	@Override
 	public void run()
 	{
-		FMLCommonHandler.instance().getMinecraftServerInstance().commandManager.executeCommand(
-				FMLCommonHandler.instance().getMinecraftServerInstance(), command);
+		Sponge.getCommandManager().process(Sponge.getServer().getConsole(), command);
 	}
-
 }

@@ -7,14 +7,12 @@ import java.util.TimerTask;
 import com.hiroku.itemcommands.data.BindingRegistry;
 import com.hiroku.itemcommands.data.BoundCommand;
 
-import net.minecraft.item.Item;
-
 public class CommandTask extends TimerTask
 {
-	public final Item item;
+	public final String item;
 	public final String playerName;
 	
-	public CommandTask(Item item, String playerName)
+	public CommandTask(String item, String playerName)
 	{
 		this.item = item;
 		this.playerName = playerName;
@@ -23,7 +21,7 @@ public class CommandTask extends TimerTask
 	@Override
 	public void run()
 	{
-		ArrayList<BoundCommand> commands = BindingRegistry.getCommands(item.getUnlocalizedName());
+		ArrayList<BoundCommand> commands = BindingRegistry.getCommands(item);
 		if (!commands.isEmpty())
 			for (BoundCommand command : commands)
 				new Timer().schedule(new DelayedExecuteTask(command.command.replaceAll("PLAYER", playerName)), command.delaySeconds * 1000);

@@ -1,18 +1,27 @@
 package com.hiroku.itemcommands;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.game.state.GameInitializationEvent;
+import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.text.Text;
+
+import com.hiroku.itemcommands.commands.Get;
 import com.hiroku.itemcommands.commands.ItemBindingExecutor;
+import com.hiroku.itemcommands.commands.Reload;
+import com.hiroku.itemcommands.commands.Remove;
+import com.hiroku.itemcommands.commands.Add;
 import com.hiroku.itemcommands.data.BindingRegistry;
 import com.hiroku.itemcommands.listeners.InteractListener;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-
-@Mod(modid = ItemCommands.MODID, name = ItemCommands.NAME, version = ItemCommands.VERSION, acceptableRemoteVersions = "*")
+@Plugin(id = ItemCommands.MODID, name = ItemCommands.NAME, version = ItemCommands.VERSION, authors = "Hiroku", description = "Simple item command binding tool")
 public class ItemCommands
 {
 	public static final String MODID = "itemcommands";
@@ -21,16 +30,19 @@ public class ItemCommands
 	
 	public static final Timer timer = new Timer();
 	
-	@EventHandler
-	public void onPreInit(FMLPreInitializationEvent event)
+	@Listener
+	public void onPreInit(GameInitializationEvent event)
 	{
 		BindingRegistry.load();
-		MinecraftForge.EVENT_BUS.register(new InteractListener());
-	}
-	
-	@EventHandler
-	public void onServerStart(FMLServerStartingEvent event)
-	{
-		event.registerServerCommand(new ItemBindingExecutor());
+		Sponge.getEventManager().registerListeners(this, new InteractListener());
+		
+		HashMap<List<String>, CommandSpec> subCommands = new HashMap<List<String>, CommandSpec>();
+		
+		subCommands.put(Arrays.asList("get", "Get"), CommandSpec.builder().description(Text.of("Gets the commands bound to the currently held item")).executor(new Get()).build());
+		subCommands.put(Arrays.asList("add", "Add"), CommandSpec.builder().arguments(GenericArguments.optional(GenericArguments.integer(Text.of("Delay"))), GenericArguments.remainingJoinedStrings(Text.of("Command"))).description(Text.of("Adds a command binding to the currently held item")).executor(new Add()).build());
+		subCommands.put(Arrays.asList("reload", "Reload"), CommandSpec.builder().description(Text.of("Reloads the config")).executor(new Reload()).build());
+		subCommands.put(Arrays.asList("remove", "Remove"), CommandSpec.builder().description(Text.of("Removes the commands for the held item")).executor(new Remove()).build());
+		
+		Sponge.getCommandManager().register(this, CommandSpec.builder().children(subCommands).executor(new ItemBindingExecutor()).build(), "itembinding", "itemBinding", "Itembinding", "ItemBinding");
 	}
 }
