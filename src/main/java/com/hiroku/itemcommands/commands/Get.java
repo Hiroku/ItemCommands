@@ -33,12 +33,12 @@ public class Get implements CommandExecutor
 			{
 				String item = optItemStack.get().getItem().getName();
 				ArrayList<BoundCommand> commands = BindingRegistry.getCommands(item);
-				ItemBindingExecutor.sendMessage(src, "&eCommands for:&r " + item);
+				src.sendMessage(Text.of(TextColors.YELLOW, "Commands for: ", TextColors.RESET, item));
 				if (commands.size() == 0)
-					ItemBindingExecutor.sendMessage(src, "&eNone.");
+					src.sendMessage(Text.of(TextColors.YELLOW, "None."));
 				else
 					for (BoundCommand command : commands)
-						ItemBindingExecutor.sendMessage(src, "&e/" + command.command + "&6. Delay: " + command.delaySeconds);
+						src.sendMessage(Text.of(TextColors.YELLOW, "/", command.command, TextColors.GOLD, " - Delay: ", command.delaySeconds));
 			}
 		}
 		return CommandResult.success();

@@ -35,12 +35,12 @@ public class Remove implements CommandExecutor
 				ArrayList<BoundCommand> commands = BindingRegistry.getCommands(item);
 				int amount = commands.size();
 				if (amount == 0)
-					ItemBindingExecutor.sendMessage(src, "&cNo bindings exist for&r " + item);
+					src.sendMessage(Text.of(TextColors.RED, "No bindings exist for ", TextColors.RESET, item));
 				else
 				{
 					BindingRegistry.clearBindings(item);
 					BindingRegistry.save();
-					ItemBindingExecutor.sendMessage(src, "&2Successfully cleared all " + amount + " binding/s from&r " + item);
+					src.sendMessage(Text.of(TextColors.DARK_GREEN, "Successfully cleared all " + amount + " binding/s from ", TextColors.RESET, item));
 				}
 			}
 		}
