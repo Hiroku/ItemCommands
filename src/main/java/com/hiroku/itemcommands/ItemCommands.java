@@ -38,10 +38,10 @@ public class ItemCommands
 		
 		HashMap<List<String>, CommandSpec> subCommands = new HashMap<List<String>, CommandSpec>();
 		
-		subCommands.put(Arrays.asList("get", "Get"), CommandSpec.builder().description(Text.of("Gets the commands bound to the currently held item")).executor(new Get()).build());
-		subCommands.put(Arrays.asList("add", "Add"), CommandSpec.builder().arguments(GenericArguments.optional(GenericArguments.integer(Text.of("Delay"))), GenericArguments.remainingJoinedStrings(Text.of("Command"))).description(Text.of("Adds a command binding to the currently held item")).executor(new Add()).build());
-		subCommands.put(Arrays.asList("reload", "Reload"), CommandSpec.builder().description(Text.of("Reloads the config")).executor(new Reload()).build());
-		subCommands.put(Arrays.asList("remove", "Remove"), CommandSpec.builder().description(Text.of("Removes the commands for the held item")).executor(new Remove()).build());
+		subCommands.put(Arrays.asList("get", "Get"), CommandSpec.builder().permission("itemcommands.get").description(Text.of("Gets the commands bound to the currently held item")).executor(new Get()).build());
+		subCommands.put(Arrays.asList("add", "Add"), CommandSpec.builder().permission("itemcommands.add").description(Text.of("Holds the ")).arguments(GenericArguments.optional(GenericArguments.integer(Text.of("Delay"))), GenericArguments.remainingJoinedStrings(Text.of("Command"))).description(Text.of("Adds a command binding to the currently held item")).executor(new Add()).build());
+		subCommands.put(Arrays.asList("reload", "Reload"), CommandSpec.builder().permission("itemcommands.reload").description(Text.of("Reloads the config")).executor(new Reload()).build());
+		subCommands.put(Arrays.asList("remove", "Remove"), CommandSpec.builder().permission("itemcommands.remove").description(Text.of("Removes the commands for the held item")).executor(new Remove()).build());
 		
 		Sponge.getCommandManager().register(this, CommandSpec.builder().children(subCommands).executor(new ItemBindingExecutor()).build(), "itembinding", "itemBinding", "Itembinding", "ItemBinding");
 	}
