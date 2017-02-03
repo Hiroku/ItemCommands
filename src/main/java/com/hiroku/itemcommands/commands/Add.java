@@ -23,6 +23,7 @@ public class Add implements CommandExecutor
 	{
 		Optional<String> optCommand = args.getOne("Command");
 		Optional<Integer> optDelay = args.getOne("Delay");
+		Optional<Boolean> optConsume = args.getOne(Text.of("consumeItem"));
 		
 		if (!optCommand.isPresent())
 			src.sendMessage(Text.of(TextColors.RED, "Error. Missing argument: Command"));
@@ -35,7 +36,8 @@ public class Add implements CommandExecutor
 				if (optItem.isPresent())
 				{
 					int delaySeconds = optDelay.isPresent() ? optDelay.get() : 0;
-					BindingRegistry.addBinding(optItem.get().getItem().getName(), command, delaySeconds);
+					boolean consumeItem = optConsume.isPresent() ? optConsume.get() : false;
+					BindingRegistry.addBinding(optItem.get().getItem().getName(), command, delaySeconds, consumeItem);
 					BindingRegistry.save();
 					src.sendMessage(Text.of(TextColors.DARK_GREEN, "Successfully registered command binding"));
 					Sponge.getCommandManager().process(src, "itembinding get");

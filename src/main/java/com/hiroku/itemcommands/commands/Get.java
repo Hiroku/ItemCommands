@@ -38,7 +38,7 @@ public class Get implements CommandExecutor
 					src.sendMessage(Text.of(TextColors.YELLOW, "None."));
 				else
 					for (BoundCommand command : commands)
-						src.sendMessage(Text.of(TextColors.YELLOW, "/", command.command, TextColors.GOLD, " - Delay: ", command.delaySeconds));
+						src.sendMessage(Text.of(TextColors.YELLOW, "/", command.command, TextColors.GOLD, " - Delay: ", command.delaySeconds, " - Consume: " + command.consumeItem));
 			}
 		}
 		return CommandResult.success();

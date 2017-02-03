@@ -26,7 +26,7 @@ public class ItemCommands
 {
 	public static final String MODID = "itemcommands";
 	public static final String NAME = "Item Commands";
-	public static final String VERSION = "2.0.0";
+	public static final String VERSION = "2.1.0";
 	
 	public static final Timer timer = new Timer();
 	
@@ -39,7 +39,7 @@ public class ItemCommands
 		HashMap<List<String>, CommandSpec> subCommands = new HashMap<List<String>, CommandSpec>();
 		
 		subCommands.put(Arrays.asList("get", "Get"), CommandSpec.builder().permission("itemcommands.get").description(Text.of("Gets the commands bound to the currently held item")).executor(new Get()).build());
-		subCommands.put(Arrays.asList("add", "Add"), CommandSpec.builder().permission("itemcommands.add").description(Text.of("Holds the ")).arguments(GenericArguments.optional(GenericArguments.integer(Text.of("Delay"))), GenericArguments.remainingJoinedStrings(Text.of("Command"))).description(Text.of("Adds a command binding to the currently held item")).executor(new Add()).build());
+		subCommands.put(Arrays.asList("add", "Add"), CommandSpec.builder().permission("itemcommands.add").description(Text.of("Holds the ")).arguments(GenericArguments.optional(GenericArguments.bool(Text.of("consumeItem"))), GenericArguments.optional(GenericArguments.integer(Text.of("Delay"))), GenericArguments.remainingJoinedStrings(Text.of("Command"))).description(Text.of("Adds a command binding to the currently held item")).executor(new Add()).build());
 		subCommands.put(Arrays.asList("reload", "Reload"), CommandSpec.builder().permission("itemcommands.reload").description(Text.of("Reloads the config")).executor(new Reload()).build());
 		subCommands.put(Arrays.asList("remove", "Remove"), CommandSpec.builder().permission("itemcommands.remove").description(Text.of("Removes the commands for the held item")).executor(new Remove()).build());
 		

@@ -47,6 +47,7 @@ public class BindingRegistry
 				{
 					String split = splits[i];
 					int delaySeconds = 0;
+					boolean consumeItem = false;
 					String command = "";
 					if (split.contains("::"))
 					{
@@ -54,12 +55,16 @@ public class BindingRegistry
 						{
 							command = split.split("::")[0];
 							delaySeconds = Integer.parseInt(split.split("::")[1]);
+							consumeItem = Boolean.parseBoolean(split.split("::")[2]);
 						}
-						catch(NumberFormatException nfe) { nfe.printStackTrace(); }
+						catch(Exception e)
+						{
+							;
+						}
 					}
 					else
 						command = split;
-					commands.add(new BoundCommand(command, delaySeconds));
+					commands.add(new BoundCommand(command, delaySeconds, consumeItem));
 				}
 					
 				
@@ -120,10 +125,10 @@ public class BindingRegistry
 		return binding.remove(item) != null;
 	}
 	
-	public static void addBinding(String item, String command, int delaySeconds)
+	public static void addBinding(String item, String command, int delaySeconds, boolean consumeItem)
 	{
 		ArrayList<BoundCommand> commands = getCommands(item);
-		commands.add(new BoundCommand(command, delaySeconds));
+		commands.add(new BoundCommand(command, delaySeconds, consumeItem));
 		binding.put(item, commands);
 	}
 }
