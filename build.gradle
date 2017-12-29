@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
-version = "1.10.2-2.1.0"
+version = "1.12.2-2.2.0"
 group= "com.hiroku.itemcommands"
 archivesBaseName = "ItemCommands"
 
@@ -20,5 +20,5 @@ repositories {
 }
 
 dependencies {
-    compile "org.spongepowered:spongeapi:5.1.0-SNAPSHOT"
+    compile "org.spongepowered:spongeapi:7.0.0-SNAPSHOT"
 }

@@ -15,3 +15,7 @@ build/
 run/
 .gradle/
 .settings/
+*.launch
+.project
+.classpath
+libs/
