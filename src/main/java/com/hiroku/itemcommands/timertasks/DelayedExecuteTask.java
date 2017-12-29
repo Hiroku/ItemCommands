@@ -4,6 +4,8 @@ import java.util.TimerTask;
 
 import org.spongepowered.api.Sponge;
 
+import com.hiroku.itemcommands.ItemCommands;
+
 public class DelayedExecuteTask extends TimerTask
 {
 	private final String command;
@@ -15,6 +17,7 @@ public class DelayedExecuteTask extends TimerTask
 	@Override
 	public void run()
 	{
-		Sponge.getCommandManager().process(Sponge.getServer().getConsole(), command);
+		Sponge.getScheduler().createSyncExecutor(Sponge.getPluginManager().getPlugin(ItemCommands.MODID).get()).execute(
+				()-> Sponge.getCommandManager().process(Sponge.getServer().getConsole(), command));
 	}
 }
